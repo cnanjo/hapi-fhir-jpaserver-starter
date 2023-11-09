@@ -14,11 +14,12 @@ spring:
     check-location: false
     baselineOnMigrate: true
   datasource:
-    url: 'jdbc:h2:file:./target/database/h2'
+    #url: 'jdbc:h2:file:./target/database/h2'
     #url: jdbc:h2:mem:test_mem
-    username: sa
-    password: null
-    driverClassName: org.h2.Driver
+    url: jdbc:postgresql://database-1.csa7bpfzwwgq.us-west-1.rds.amazonaws.com/hapi
+    username: hapi_user
+    password: Quc37LFpmJU*va!3VZk.wtpRuP2-ycbN
+    driverClassName: org.postgresql.Driver
     max-active: 15
 
     # database connection pool size
@@ -32,7 +33,8 @@ spring:
       #Hibernate dialect is automatically detected except Postgres and H2.
       #If using H2, then supply the value of ca.uhn.fhir.jpa.model.dialect.HapiFhirH2Dialect
       #If using postgres, then supply the value of ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
-      hibernate.dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirH2Dialect
+      #hibernate.dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirH2Dialect
+      hibernate.dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
   #      hibernate.hbm2ddl.auto: update
   #      hibernate.jdbc.batch_size: 20
   #      hibernate.cache.use_query_cache: false
@@ -41,7 +43,7 @@ spring:
   #      hibernate.cache.use_minimal_puts: false
 
   ###    These settings will enable fulltext search with lucene or elastic
-      hibernate.search.enabled: true
+      hibernate.search.enabled: false
   ### lucene parameters
 #      hibernate.search.backend.type: lucene
 #      hibernate.search.backend.analysis.configurer: ca.uhn.fhir.jpa.search.HapiHSearchAnalysisConfigurers$HapiLuceneAnalysisConfigurer
@@ -57,7 +59,7 @@ hapi:
     ### This enables the swagger-ui at /fhir/swagger-ui/index.html as well as the /fhir/api-docs (see https://hapifhir.io/hapi-fhir/docs/server_plain/openapi.html)
     openapi_enabled: true
     ### This is the FHIR version. Choose between, DSTU2, DSTU3, R4 or R5
-    fhir_version: R4
+    fhir_version: R5
     ### This flag when enabled to true, will avail evaluate measure operations from CR Module.
     ### Flag is false by default, can be passed as command line argument to override.
     cr_enabled: "${CR_ENABLED: false}"
@@ -93,10 +95,10 @@ hapi:
     # Allowed Bundle Types for persistence (defaults are: COLLECTION,DOCUMENT,MESSAGE)
     ##################################################
     #    allowed_bundle_types: COLLECTION,DOCUMENT,MESSAGE,TRANSACTION,TRANSACTIONRESPONSE,BATCH,BATCHRESPONSE,HISTORY,SEARCHSET
-    #    allow_cascading_deletes: true
+    allow_cascading_deletes: true
     #    allow_contains_searches: true
     #    allow_external_references: true
-    #    allow_multiple_delete: true
+    allow_multiple_delete: true
     #    allow_override_default_search_params: true
     #    auto_create_placeholder_reference_targets: false
     #    cr_enabled: true
@@ -119,7 +121,7 @@ hapi:
     #    enforce_referential_integrity_on_delete: false
     #    enforce_referential_integrity_on_write: false
     #    etag_support_enabled: true
-    #    expunge_enabled: true
+    expunge_enabled: true
     #    client_id_strategy: ALPHANUMERIC
     fhirpath_interceptor_enabled: true
     #    filter_search_enabled: true
